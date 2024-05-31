@@ -1,0 +1,77 @@
+InitializeAccountsTable...
+InitializeAccountsTable ends
+
+ReadCommitedTest...
+Transaction 2 fell asleep for 100 milliseconds...
+Transaction 1: start
+Transaction 1: Olga insert
+Transaction 1 fell asleep for 1500 milliseconds...
+Transaction 2: start
+Transaction 2: reading rows...
+Transaction 2: commit
+Transaction 1: Bob insert
+Transaction 1: commit
+ReadCommitedTest ends
+
+RepeatableReadTest, isolation level = ReadCommitted...
+Transaction: start
+Transaction: reading rows...
+Transaction: 1 Olga 100000
+Transaction: 2 Bob 1
+Inserting transaction: start
+Inserting transaction: Erik insert
+Inserting transaction: Jenna insert
+Inserting transaction: commit
+Transaction: reading rows again...
+Transaction: 1 Olga 100000
+Transaction: 2 Bob 1
+Transaction: 3 Erik 78
+Transaction: 4 Jenna 398
+Transaction: commit
+RepeatableReadTest ends
+
+RepeatableReadTest, isolation level = RepeatableRead...
+Transaction: start
+Transaction: reading rows...
+Transaction: 1 Olga 100000
+Transaction: 2 Bob 1
+Transaction: 3 Erik 78
+Transaction: 4 Jenna 398
+Inserting transaction: start
+Inserting transaction: Erik insert
+Inserting transaction: Jenna insert
+Inserting transaction: commit
+Transaction: reading rows again...
+Transaction: 1 Olga 100000
+Transaction: 2 Bob 1
+Transaction: 3 Erik 78
+Transaction: 4 Jenna 398
+Transaction: commit
+RepeatableReadTest ends
+
+SerializableTest, isolation level = ReadCommitted...
+Transaction 2: start
+Transaction 1: start
+Transaction 1: Olga`s balance updated: -100
+Transaction 1 fell asleep for 100 milliseconds...
+Transaction 1: reading row WHERE ID = 1...
+Transaction 1: 1 Olga 99900
+Transaction 1: commit
+Transaction 2: Olga`s balance updated: -50
+Transaction 2 fell asleep for 100 milliseconds...
+Transaction 2: reading row WHERE ID = 1...
+Transaction 2: 1 Olga 99850
+Transaction 2: commit
+SerializableTest ends
+
+SerializableTest, isolation level = Serializable...
+Transaction 1: start
+Transaction 2: start
+Transaction 2: Olga`s balance updated: -50
+Transaction 2 fell asleep for 100 milliseconds...
+Transaction 2: reading row WHERE ID = 1...
+Transaction 2: 1 Olga 99800
+Transaction 2: commit
+40001: не удалось сериализовать доступ из-за параллельного изменения
+SerializableTest ends
+
